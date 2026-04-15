@@ -46,15 +46,29 @@ app.get('/health', (req, res) => {
 // Error handling middleware
 app.use(errorHandler);
 
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+
+if (process.env.NODE_ENV !== 'production') {
+  // Local development
+  mongoose.connect(process.env.MONGODB_URI)
+    .then(() => {
+      console.log('Connected to MongoDB');
+      app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+      });
+    })
+    .catch((error) => {
+      console.error('MongoDB connection error:', error);
+      process.exit(1);
     });
-  })
-  .catch((error) => {
-    console.error('MongoDB connection error:', error);
-    process.exit(1);
-  });
+} else {
+  // Vercel deployment
+  mongoose.connect(process.env.MONGODB_URI)
+    .then(() => {
+      console.log('Connected to MongoDB (Vercel)');
+    })
+    .catch((error) => {
+      console.error('MongoDB connection error:', error);
+    });
+}
+
+export default app;
