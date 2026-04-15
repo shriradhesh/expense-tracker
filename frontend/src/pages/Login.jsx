@@ -74,15 +74,7 @@ const Login = () => {
           <Link to="/register" className="text-indigo-600 hover:text-indigo-700 font-semibold">
             Sign up
           </Link>
-        </p>
-
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-          <p className="text-sm text-gray-600 text-center">
-            Demo Credentials:<br />
-            Email: demo@example.com<br />
-            Password: demo123
-          </p>
-        </div>
+        </p>        
       </div>
     </div>
   );

@@ -7,10 +7,12 @@ import { CATEGORIES } from '../constants/assets';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { LogOut, TrendingUp, Calendar, Award, DollarSign } from 'lucide-react';
 import toast from 'react-hot-toast';
+import ConfirmModal from '../components/ConfirmModal';
 
 const Dashboard = () => {
   const [summary, setSummary] = useState({ monthlyTotal: 0, yearlyTotal: 0, highestCategory: null, categoryBreakdown: [] });
   const [loading, setLoading] = useState(true);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -30,6 +32,11 @@ const Dashboard = () => {
   };
 
   const handleLogout = () => {
+    setShowLogoutConfirm(true);
+  };
+
+  const confirmLogout = () => {
+    setShowLogoutConfirm(false);
     logout();
     navigate('/login');
   };
@@ -72,6 +79,16 @@ const Dashboard = () => {
           </div>
         </div>
       </nav>
+
+      <ConfirmModal
+        isOpen={showLogoutConfirm}
+        title="Confirm Logout"
+        message="Are you sure you want to logout?"
+        onConfirm={confirmLogout}
+        onCancel={() => setShowLogoutConfirm(false)}
+        confirmText="Yes"
+        cancelText="No"
+      />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

@@ -7,6 +7,7 @@ import { CATEGORIES } from '../constants/assets';
 import { Plus, Edit2, Trash2, LogOut, ArrowUpDown, Search } from 'lucide-react';
 import toast from 'react-hot-toast';
 import ExpenseModal from '../components/ExpenseModal';
+import ConfirmModal from '../components/ConfirmModal';
 
 const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
@@ -15,6 +16,7 @@ const Expenses = () => {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState(null);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -49,6 +51,11 @@ const Expenses = () => {
   };
 
   const handleLogout = () => {
+    setShowLogoutConfirm(true);
+  };
+
+  const confirmLogout = () => {
+    setShowLogoutConfirm(false);
     logout();
     navigate('/login');
   };
@@ -218,6 +225,16 @@ const Expenses = () => {
           )}
         </div>
       </div>
+
+      <ConfirmModal
+        isOpen={showLogoutConfirm}
+        title="Confirm Logout"
+        message="Are you sure you want to logout?"
+        onConfirm={confirmLogout}
+        onCancel={() => setShowLogoutConfirm(false)}
+        confirmText="Yes"
+        cancelText="No"
+      />
 
       <ExpenseModal
         isOpen={modalOpen}
